@@ -52,7 +52,6 @@ class _TasksScreenState extends State<TasksScreen> {
               onPressed: () => _addTask(context),
               style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
-                padding: const EdgeInsets.all(16),
                 shadowColor: Colors.black.withOpacity(0.5),
                 elevation: 6,
               ),
