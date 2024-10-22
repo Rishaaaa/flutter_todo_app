@@ -15,7 +15,6 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch tasks when the screen initializes
     context.read<TaskBloc>().add(FetchTasks());
   }
 

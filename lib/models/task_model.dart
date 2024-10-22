@@ -1,26 +1,23 @@
 class Task {
-  final int id;
+  final String? id;
   final String title;
   final String? description;
   final bool isCompleted;
-  final bool isDeleted;
   final DateTime dueDate;
 
   Task({
-    required this.id,
+    this.id,
     required this.title,
     this.description,
     this.isCompleted = false,
-    this.isDeleted = false,
     DateTime? dueDate,
   }) : dueDate = dueDate ?? DateTime.now();
 
   Task copyWith({
-    int? id,
+    String? id,
     String? title,
     String? description,
     bool? isCompleted,
-    bool? isDeleted,
     DateTime? dueDate,
   }) {
     return Task(
@@ -28,8 +25,27 @@ class Task {
       title: title ?? this.title,
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
-      isDeleted: isDeleted ?? this.isDeleted,
       dueDate: dueDate ?? this.dueDate,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'todo_id': id,
+      'title': title,
+      'description': description,
+      'is_completed': isCompleted,
+      'due_date': dueDate.millisecondsSinceEpoch,
+    };
+  }
+
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      id: json['todo_id'],
+      title: json['title'],
+      description: json['description'],
+      isCompleted: json['is_completed'],
+      dueDate: DateTime.fromMillisecondsSinceEpoch(json['due_date']),
     );
   }
 }

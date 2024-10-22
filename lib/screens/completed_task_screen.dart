@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../blocs/bloc_exports.dart';
 import '../models/task_model.dart';
+import '../widgets/scaffold_message.dart';
 import '../widgets/task_list.dart';
 
 class CompletedTaskScreen extends StatelessWidget {
@@ -10,7 +11,11 @@ class CompletedTaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TaskBloc, TaskState>(
       builder: (context, state) {
-        List<Task> tasksList = state.completedTasks.where((task) => !task.isDeleted).toList();
+        if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
+          ScaffoldMessage.show(context, MessageType.error, state.errorMessage!);
+        }
+        List<Task> tasksList =
+            state.completedTasks.where((task) => task.isCompleted).toList();
 
         tasksList.sort((a, b) {
           return a.dueDate.compareTo(b.dueDate);
@@ -19,9 +24,29 @@ class CompletedTaskScreen extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: TasksList(tasksList: tasksList),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Chip(
+                  backgroundColor: const Color.fromARGB(255, 234, 214, 238),
+                  label: Text(
+                    '${(state.completedTasks.length)} Tasks',
+                  ),
+                ),
+              ),
             ),
+            if (tasksList.isEmpty)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'No completed tasks available.',
+                  style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+                ),
+              )
+            else
+              Expanded(
+                child: TasksList(tasksList: tasksList),
+              ),
           ],
         );
       },

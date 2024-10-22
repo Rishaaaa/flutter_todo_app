@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../blocs/bloc_exports.dart';
 import '../models/task_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
   final Task? task;
 
-  const AddTaskScreen({this.task});
+  const AddTaskScreen({super.key, this.task});
 
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
@@ -101,28 +100,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ElevatedButton(
                 onPressed: () {
                   var newTask = Task(
-                    id: widget.task?.id ?? 0,
+                    id: widget.task?.id ?? "",
                     title: titleController.text,
                     description: descriptionController.text.isNotEmpty
                         ? descriptionController.text
                         : null,
                     dueDate: selectedDueDate ?? DateTime.now(),
                     isCompleted: widget.task?.isCompleted ?? false,
-                    isDeleted: widget.task?.isDeleted ?? false,
                   );
 
                   if (widget.task == null) {
-                    context.read<TaskBloc>().add(AddTask(task: newTask));
+                    // For new tasks
+                    context.read<TaskBloc>().add(AddTask(task: newTask, context: context));
                   } else {
-                    context.read<TaskBloc>().add(UpdateTask(task: newTask));
+                    // For updating existing tasks
+                    context.read<TaskBloc>().add(UpdateTask(task: newTask, context:context));
                   }
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Center(child: Text(widget.task == null ? 'Task Added Successfully' : 'Task Updated Successfully')),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
 
                   Navigator.pop(context);
                 },

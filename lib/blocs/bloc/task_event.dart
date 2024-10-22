@@ -9,32 +9,31 @@ sealed class TaskEvent extends Equatable {
 
 class FetchTasks extends TaskEvent {}
 
-class AddTask extends TaskEvent{
+class AddTask extends TaskEvent {
   final Task task;
-  const AddTask({
-    required this.task,
-  });
+  final BuildContext context;
+  const AddTask({required this.task, required this.context});
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [task, context];
 }
 
-class UpdateTask extends TaskEvent{
+class UpdateTask extends TaskEvent {
   final Task task;
-  const UpdateTask({
-    required this.task,
-  });
+  final BuildContext context;
+  const UpdateTask({required this.task, required this.context});
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [task, context];
 }
 
-class DeleteTask extends TaskEvent{
+class DeleteTask extends TaskEvent {
   final Task task;
+  final BuildContext context;
   const DeleteTask({
-    required this.task,
+    required this.task, required this.context
   });
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [task, context];
 }
